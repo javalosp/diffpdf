@@ -641,7 +641,7 @@ void MainWindow::initialize(const QString &filename1,
                 PdfDocument pdf2 = PdfDocument(Poppler::Document::load(filename2));
                 const int page_count = std::max(pdf1->numPages(), pdf2->numPages());
                 saveAsPdf(0, page_count, pdf1, pdf2, filename1 + " - " + filename2);
-                // QApplication::quit(); // Don't use this
+                QApplication::quit(); // Don't use this
             }
         }
     }
