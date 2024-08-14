@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     const QString LanguageOption = "--language=";
     QString filename1;
     QString filename2;
-    bool saveAndQuit = true; // Change to true to enforce save without need of flags
+    bool saveAndQuit = false; // Change to true to enforce save without need of flags
     QString language = QLocale::system().name();
     bool optionsOK = true;
     Debug debug = DebugOff;

@@ -64,6 +64,7 @@ private slots:
         void compare();
         void options();
         void save();
+        void save_quit(); // New function for saving without the interactive window
         void about();
         void help();
         void initialize(const QString &filename1, const QString &filename2);
