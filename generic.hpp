@@ -33,19 +33,28 @@ typedef std::tr1::shared_ptr<Poppler::TextBox> PdfTextBox;
 #endif
 typedef QList<PdfTextBox> TextBoxList;
 
-enum InitialComparisonMode{CompareAppearance=0, CompareCharacters=1,
-                           CompareWords=2};
+enum InitialComparisonMode
+{
+    CompareAppearance = 0,
+    CompareCharacters = 1,
+    CompareWords = 2
+};
 
-enum Debug{DebugOff, DebugShowTexts, DebugShowTextsAndYX};
+enum Debug
+{
+    DebugOff,
+    DebugShowTexts,
+    DebugShowTextsAndYX
+};
 
-const int POINTS_PER_INCH = 72;
+const int POINTS_PER_INCH = 300;
 
 typedef QSet<int> Ranges;
 typedef QPair<Ranges, Ranges> RangesPair;
 
 struct PagePair
 {
-    PagePair(int l=-1, int r=-1, bool v=false)
+    PagePair(int l = -1, int r = -1, bool v = false)
         : left(l), right(r), hasVisualDifference(v) {}
 
     bool isNull() { return left == -1 || right == -1; }
@@ -56,36 +65,41 @@ struct PagePair
 };
 Q_DECLARE_METATYPE(PagePair)
 
-
 inline const QChar canonicalizedCharacter(const QChar &in)
 {
     QChar out = in;
     const ushort c = in.unicode();
-    switch (c) {
-        case 0x93:   out = QChar(0x201C); break; // “
-        case 0x94:   out = QChar(0x201D); break; // ”
-        case 0xAD:   // fallthrough (soft-hyphen)
-        case 0x2D:   // fallthrough (hyphen-minus)
-        case 0x2010: // fallthrough (hyphen)
-        case 0x2011: // fallthrough (non-breaking hyphen)
-        case 0x2043: out = '-'; break; // (hyphen-bullet)
+    switch (c)
+    {
+    case 0x93:
+        out = QChar(0x201C);
+        break; // “
+    case 0x94:
+        out = QChar(0x201D);
+        break;   // ”
+    case 0xAD:   // fallthrough (soft-hyphen)
+    case 0x2D:   // fallthrough (hyphen-minus)
+    case 0x2010: // fallthrough (hyphen)
+    case 0x2011: // fallthrough (non-breaking hyphen)
+    case 0x2043:
+        out = '-';
+        break; // (hyphen-bullet)
     }
     return out;
 }
-
 
 void scaleRect(int dpi, QRectF *rect);
 int pointValueForPixelOffset(const double dpi, int px);
 int pixelOffsetForPointValue(const double dpi, int pt);
 QRectF rectForMargins(const int width, const int height, const int top,
-        const int bottom, const int left, const int right);
-Ranges unorderedRange(int end, int start=0);
+                      const int bottom, const int left, const int right);
+Ranges unorderedRange(int end, int start = 0);
 
 QPixmap colorSwatch(const QColor &color);
 QPixmap brushSwatch(const Qt::BrushStyle style, const QColor &color);
 QPixmap penStyleSwatch(const Qt::PenStyle style, const QColor &color);
 
-const TextBoxList getTextBoxes(PdfPage page, const QRectF &rect=QRect());
+const TextBoxList getTextBoxes(PdfPage page, const QRectF &rect = QRect());
 
 const QString strippedFilename(const QString &filename);
 const QStringList droppedFilenames(const QMimeData *mimeData);
