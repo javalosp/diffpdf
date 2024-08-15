@@ -657,7 +657,7 @@ void MainWindow::initialize(const QString &filename1,
                 // the interactive window for saving
                 saveFilename = "diff.pdf";
                 save_quit(); 
-                QApplication::quit(); // Don't use this
+                QApplication::quit(); 
                 
             }
         }
@@ -1741,7 +1741,9 @@ void MainWindow::saveAsImages(const int start, const int end,
         QImage image(rect.size(), QImage::Format_ARGB32);
         QPainter painter(&image);
         painter.setRenderHints(QPainter::Antialiasing |
-                               QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+                               //QPainter::TextAntialiasing |
+                               QPainter::SmoothPixmapTransform |
+                               QPainter::LosslessImageRendering);
         painter.setFont(QFont("Helvetica", 11));
         painter.setPen(Qt::darkCyan);
         painter.fillRect(rect, Qt::white);
@@ -1757,6 +1759,55 @@ void MainWindow::saveAsImages(const int start, const int end,
     }
 }
 
+void MainWindow::saveAsPdf_wide(const int start, const int end,
+                                const PdfDocument &pdf1, const PdfDocument &pdf2,
+                                const QString &header)
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFileName(saveFilename);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setColorMode(QPrinter::Color);
+    printer.setPaperSize(QPrinter::A0);
+    printer.setResolution(3600);
+    printer.setFullPage(true);
+    printer.setCreator(tr("DiffPDF"));
+    printer.setOrientation(savePages == SaveBothPages
+                               ? QPrinter::Landscape
+                               : QPrinter::Portrait);
+    QPainter painter(&printer);
+    painter.setRenderHints(QPainter::Antialiasing |
+                           //QPainter::TextAntialiasing |
+                           QPainter::SmoothPixmapTransform |
+                           QPainter::LosslessImageRendering);
+    painter.setFont(QFont("Helvetica", 11));
+    painter.setPen(Qt::darkCyan);
+    PdfPage page1(pdf1->page(0));
+    if (!page1)
+        return;
+    PdfPage page2(pdf2->page(0));
+    if (!page2)
+        return;
+    int width = 2 * (savePages == SaveBothPages
+                         ? page1->pageSize().width() + page2->pageSize().width()
+                         : page1->pageSize().width());
+    const int y = fontMetrics().lineSpacing();
+    const int height = (2 * page1->pageSize().height()) - y;
+    const int gap = 30;
+    const QRect rect(0, 0, width, height);
+    if (savePages == SaveBothPages)
+        width = (width / 2) - gap;
+    const QRect leftRect(0, y, width, height);
+    const QRect rightRect(width + gap, y, width, height);
+    for (int index = start; index < end; ++index)
+    {
+        if (!paintSaveAs(&painter, index, pdf1, pdf2, header, rect,
+                         leftRect, rightRect))
+            continue;
+        if (index + 1 < end)
+            printer.newPage();
+    }
+}
+
 void MainWindow::saveAsPdf(const int start, const int end,
                            const PdfDocument &pdf1, const PdfDocument &pdf2,
                            const QString &header)
@@ -1765,13 +1816,18 @@ void MainWindow::saveAsPdf(const int start, const int end,
     printer.setOutputFileName(saveFilename);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setColorMode(QPrinter::Color);
+    printer.setResolution(3600);
+    printer.setPaperSize(QPrinter::A0);
+    printer.setFullPage(true);
     printer.setCreator(tr("DiffPDF"));
     printer.setOrientation(savePages == SaveBothPages
                                ? QPrinter::Landscape
                                : QPrinter::Portrait);
     QPainter painter(&printer);
-    painter.setRenderHints(QPainter::Antialiasing |
-                           QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+    //painter.setRenderHints(QPainter::Antialiasing |
+    //                       //QPainter::TextAntialiasing |
+    //                       QPainter::SmoothPixmapTransform |
+    //                       QPainter::LosslessImageRendering);
     painter.setFont(QFont("Helvetica", 11));
     painter.setPen(Qt::darkCyan);
     const QRect rect(0, 0, painter.viewport().width(),

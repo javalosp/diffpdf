@@ -130,6 +130,8 @@ private:
         void showMargins(QLabel *label);
         void saveAsPdf(const int start, const int end, const PdfDocument &pdf1,
                        const PdfDocument &pdf2, const QString &header);
+        void saveAsPdf_wide(const int start, const int end, const PdfDocument &pdf1,
+                       const PdfDocument &pdf2, const QString &header);
         bool paintSaveAs(QPainter *painter, const int index,
                          const PdfDocument &pdf1, const PdfDocument &pdf2,
                          const QString &header, const QRect &rect,

@@ -38,7 +38,7 @@ enum InitialComparisonMode{CompareAppearance=0, CompareCharacters=1,
 
 enum Debug{DebugOff, DebugShowTexts, DebugShowTextsAndYX};
 
-const int POINTS_PER_INCH = 72;
+const int POINTS_PER_INCH = 300;
 
 typedef QSet<int> Ranges;
 typedef QPair<Ranges, Ranges> RangesPair;
