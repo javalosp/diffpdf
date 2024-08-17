@@ -1028,7 +1028,7 @@ void MainWindow::addHighlighting(QRectF *bigRect,
                                  const int OVERLAP, const int DPI, const bool COMBINE)
 {
     QRectF rect = wordOrCharRect;
-    scaleRect(DPI, &rect);
+    scaleRect(RESOLUTION_FACTOR*DPI, &rect);
     if (COMBINE && rect.adjusted(-OVERLAP, -OVERLAP, OVERLAP, OVERLAP)
                        .intersects(*bigRect))
         *bigRect = bigRect->united(rect);
@@ -1741,7 +1741,7 @@ void MainWindow::saveAsImages(const int start, const int end,
         QImage image(rect.size(), QImage::Format_ARGB32);
         QPainter painter(&image);
         painter.setRenderHints(QPainter::Antialiasing |
-                               //QPainter::TextAntialiasing |
+                               QPainter::TextAntialiasing |
                                QPainter::SmoothPixmapTransform |
                                QPainter::LosslessImageRendering);
         painter.setFont(QFont("Helvetica", 11));
@@ -1776,7 +1776,7 @@ void MainWindow::saveAsPdf_wide(const int start, const int end,
                                : QPrinter::Portrait);
     QPainter painter(&printer);
     painter.setRenderHints(QPainter::Antialiasing |
-                           //QPainter::TextAntialiasing |
+                           QPainter::TextAntialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::LosslessImageRendering);
     painter.setFont(QFont("Helvetica", 11));
@@ -1824,10 +1824,10 @@ void MainWindow::saveAsPdf(const int start, const int end,
                                ? QPrinter::Landscape
                                : QPrinter::Portrait);
     QPainter painter(&printer);
-    //painter.setRenderHints(QPainter::Antialiasing |
-    //                       //QPainter::TextAntialiasing |
-    //                       QPainter::SmoothPixmapTransform |
-    //                       QPainter::LosslessImageRendering);
+    painter.setRenderHints(QPainter::Antialiasing |
+                           QPainter::TextAntialiasing |
+                           QPainter::SmoothPixmapTransform |
+                           QPainter::LosslessImageRendering);
     painter.setFont(QFont("Helvetica", 11));
     painter.setPen(Qt::darkCyan);
     const QRect rect(0, 0, painter.viewport().width(),

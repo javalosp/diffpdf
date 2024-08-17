@@ -38,7 +38,11 @@ enum InitialComparisonMode{CompareAppearance=0, CompareCharacters=1,
 
 enum Debug{DebugOff, DebugShowTexts, DebugShowTextsAndYX};
 
-const int POINTS_PER_INCH = 300;
+// Let's add a resolution increasing factor
+const int   RESOLUTION_FACTOR = 4;
+
+// Originally POINTS_PER_INCH = 72 
+const int POINTS_PER_INCH = RESOLUTION_FACTOR*72;
 
 typedef QSet<int> Ranges;
 typedef QPair<Ranges, Ranges> RangesPair;
