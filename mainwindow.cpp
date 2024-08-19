@@ -647,18 +647,17 @@ void MainWindow::initialize(const QString &filename1,
                 PdfDocument pdf2 = PdfDocument(Poppler::Document::load(filename2));
                 const int page_count = std::max(pdf1->numPages(), pdf2->numPages());
                 saveAsPdf(0, page_count, pdf1, pdf2, filename1 + " - " + filename2);
-                save_quit(); 
+                save_quit();
                 QApplication::quit(); // Don't use this
                 */
 
-                // This is the new implementation, making use of a 
+                // This is the new implementation, making use of a
                 // new function for saving (save_quit)
-                // It's basically the same save() function without 
+                // It's basically the same save() function without
                 // the interactive window for saving
                 saveFilename = "diff.pdf";
-                save_quit(); 
-                QApplication::quit(); 
-                
+                save_quit();
+                QApplication::quit();
             }
         }
     }
@@ -1028,7 +1027,7 @@ void MainWindow::addHighlighting(QRectF *bigRect,
                                  const int OVERLAP, const int DPI, const bool COMBINE)
 {
     QRectF rect = wordOrCharRect;
-    scaleRect(RESOLUTION_FACTOR*DPI, &rect);
+    scaleRect(RESOLUTION_FACTOR * DPI, &rect);
     if (COMBINE && rect.adjusted(-OVERLAP, -OVERLAP, OVERLAP, OVERLAP)
                        .intersects(*bigRect))
         *bigRect = bigRect->united(rect);
@@ -1671,40 +1670,40 @@ void MainWindow::save()
 void MainWindow::save_quit()
 {
     // This is just the same save() function without initialising a form (save window)
-        QString filename1 = filename1LineEdit->text();
-        PdfDocument pdf1 = getPdf(filename1);
-        if (!pdf1)
-            return;
-        QString filename2 = filename2LineEdit->text();
-        PdfDocument pdf2 = getPdf(filename2);
-        if (!pdf2)
-            return;
-        saveButton->setEnabled(false);
-        QApplication::processEvents();
-        const int originalIndex = viewDiffComboBox->currentIndex();
-        int start = originalIndex;
-        int end = originalIndex + 1;
-        if (saveAll)
-        {
-            start = 0;
-            end = viewDiffComboBox->count();
-        }
-        QString header;
-        const QChar bullet(0x2022);
-        if (savePages == SaveLeftPages)
-            header = tr("DiffPDF %1 %2 %1 %3").arg(bullet).arg(filename1).arg(QDate::currentDate().toString(Qt::ISODate));
-        else if (savePages == SaveRightPages)
-            header = tr("DiffPDF %1 %2 %1 %3").arg(bullet).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
-        else
-            header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet).arg(filename1).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
-        if (saveFilename.toLower().endsWith(".pdf"))
-            saveAsPdf(start, end, pdf1, pdf2, header);
-        else
-            saveAsImages(start, end, pdf1, pdf2, header);
-        updateViews(originalIndex);
-        if (saveFilename.toLower().endsWith(".pdf"))
-            writeLine(tr("Saved %1").arg(saveFilename));
-        saveButton->setEnabled(true);
+    QString filename1 = filename1LineEdit->text();
+    PdfDocument pdf1 = getPdf(filename1);
+    if (!pdf1)
+        return;
+    QString filename2 = filename2LineEdit->text();
+    PdfDocument pdf2 = getPdf(filename2);
+    if (!pdf2)
+        return;
+    saveButton->setEnabled(false);
+    QApplication::processEvents();
+    const int originalIndex = viewDiffComboBox->currentIndex();
+    int start = originalIndex;
+    int end = originalIndex + 1;
+    if (saveAll)
+    {
+        start = 0;
+        end = viewDiffComboBox->count();
+    }
+    QString header;
+    const QChar bullet(0x2022);
+    if (savePages == SaveLeftPages)
+        header = tr("DiffPDF %1 %2 %1 %3").arg(bullet).arg(filename1).arg(QDate::currentDate().toString(Qt::ISODate));
+    else if (savePages == SaveRightPages)
+        header = tr("DiffPDF %1 %2 %1 %3").arg(bullet).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
+    else
+        header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet).arg(filename1).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
+    if (saveFilename.toLower().endsWith(".pdf"))
+        saveAsPdf(start, end, pdf1, pdf2, header);
+    else
+        saveAsImages(start, end, pdf1, pdf2, header);
+    updateViews(originalIndex);
+    if (saveFilename.toLower().endsWith(".pdf"))
+        writeLine(tr("Saved %1").arg(saveFilename));
+    saveButton->setEnabled(true);
     //}
 }
 
@@ -1828,7 +1827,7 @@ void MainWindow::saveAsPdf(const int start, const int end,
                            QPainter::TextAntialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::LosslessImageRendering);
-    painter.setFont(QFont("Helvetica", 11));
+    painter.setFont(QFont("Helvetica", 44));
     painter.setPen(Qt::darkCyan);
     const QRect rect(0, 0, painter.viewport().width(),
                      painter.fontMetrics().height());
