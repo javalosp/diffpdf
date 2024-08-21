@@ -1827,7 +1827,7 @@ void MainWindow::saveAsPdf(const int start, const int end,
                            QPainter::TextAntialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::LosslessImageRendering);
-    painter.setFont(QFont("Helvetica", 44));
+    painter.setFont(QFont("Helvetica", 32));
     painter.setPen(Qt::darkCyan);
     const QRect rect(0, 0, painter.viewport().width(),
                      painter.fontMetrics().height());
