@@ -1695,7 +1695,8 @@ void MainWindow::save_quit()
     else if (savePages == SaveRightPages)
         header = tr("DiffPDF %1 %2 %1 %3").arg(bullet).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
     else
-        header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet).arg(filename1).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
+        // header = tr("DiffPDF %1 %2 vs. %3 %1 %4").arg(bullet).arg(filename1).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
+        header = tr("%2 vs. %3 %1 %4").arg(bullet).arg(filename1).arg(filename2).arg(QDate::currentDate().toString(Qt::ISODate));
     if (saveFilename.toLower().endsWith(".pdf"))
         saveAsPdf(start, end, pdf1, pdf2, header);
     else
@@ -1827,7 +1828,7 @@ void MainWindow::saveAsPdf(const int start, const int end,
                            QPainter::TextAntialiasing |
                            QPainter::SmoothPixmapTransform |
                            QPainter::LosslessImageRendering);
-    painter.setFont(QFont("Helvetica", 32));
+    painter.setFont(QFont("Helvetica", 24));
     painter.setPen(Qt::darkCyan);
     const QRect rect(0, 0, painter.viewport().width(),
                      painter.fontMetrics().height());
